@@ -1,21 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import { SnapchatRoutes } from "./models/SnapchatModels";
+import { stories } from "./screens/Snapchat/components/SnapchatData";
+import Snapchat from "./screens/Snapchat/Snapchat";
+import Story from "./screens/Story/Story";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export const assets = stories
+  .map((story) => [story.avatar, story.source])
+  .flat();
+
+const Stack = createSharedElementStackNavigator<SnapchatRoutes>();
+
+const App = () => (
+  <NavigationContainer>
+    <Stack.Navigator
+      screenOptions={{
+        gestureEnabled: false,
+        headerShown: false,
+        cardOverlayEnabled: true,
+        cardStyle: { backgroundColor: "transparent" },
+      }}
+      mode="modal"
+    >
+      <Stack.Screen name="Snapchat" component={Snapchat} />
+      <Stack.Screen
+        name="Story"
+        component={Story}
+        sharedElements={(route) => {
+          const { id } = route.params.story;
+          return [id];
+        }}
+      />
+    </Stack.Navigator>
+  </NavigationContainer>
+);
+
+export default App;
