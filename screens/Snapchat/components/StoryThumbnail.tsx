@@ -1,33 +1,37 @@
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
 import { View, Image, Dimensions, StyleSheet, Pressable } from "react-native";
 import { SharedElement } from "react-navigation-shared-element";
 
-import { Story } from "../../../models/SnapchatModels";
+import { StoryThumbnailProps } from "../interface/StoryThumbnailProps";
 
 const margin = 20;
 const borderRadius = 5;
 const width = Dimensions.get("window").width / 2 - margin * 2;
 
-interface StoryThumbnailProps {
-  story: Story;
-}
-
 export default function StoryThumbnail({ story }: StoryThumbnailProps) {
   const navigation = useNavigation();
 
+  const [opacity, setOpacity] = useState(1);
+
+  useFocusEffect(() => {
+    if (navigation.isFocused()) {
+      setOpacity(1);
+    }
+  });
+
   return (
     <Pressable
-      style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
       onPress={() => {
+        setOpacity(0);
         navigation.navigate("Story", { story });
       }}
     >
-      <View style={styles.container}>
-        <SharedElement id={story.id} style={{ flex: 1 }}>
+      <SharedElement id={story.id} style={{ flex: 1 }}>
+        <View style={[styles.container, { opacity }]}>
           <Image source={story.source} style={styles.image} />
-        </SharedElement>
-      </View>
+        </View>
+      </SharedElement>
     </Pressable>
   );
 }

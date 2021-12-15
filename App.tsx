@@ -3,13 +3,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 
 import { SnapchatRoutes } from "./models/SnapchatModels";
-import { stories } from "./screens/Snapchat/components/SnapchatData";
 import Snapchat from "./screens/Snapchat/Snapchat";
 import Story from "./screens/Story/Story";
-
-export const assets = stories
-  .map((story) => [story.avatar, story.source])
-  .flat();
 
 const Stack = createSharedElementStackNavigator<SnapchatRoutes>();
 

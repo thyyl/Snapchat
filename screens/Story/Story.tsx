@@ -1,4 +1,3 @@
-import { NavigationProp, RouteProp } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
@@ -16,12 +15,7 @@ import { useVector, snapPoint } from "react-native-redash";
 import { SharedElement } from "react-navigation-shared-element";
 import { Video } from "expo-av";
 
-import { SnapchatRoutes } from "../../models/SnapchatModels";
-
-interface StoryProps {
-  navigation: NavigationProp<SnapchatRoutes, "Story">;
-  route: RouteProp<SnapchatRoutes, "Story">;
-}
+import { StoryProps } from "./interface/StoryPropsInterface";
 
 const { height } = Dimensions.get("window");
 const AnimatedVideo = Animated.createAnimatedComponent(Video);
@@ -30,6 +24,7 @@ const Story = ({ route, navigation }: StoryProps) => {
   const isGestureActive = useSharedValue(false);
   const translation = useVector();
   const { story } = route.params;
+
   const onGestureEvent = useAnimatedGestureHandler({
     onStart: () => (isGestureActive.value = true),
     onActive: ({ translationX, translationY }) => {
